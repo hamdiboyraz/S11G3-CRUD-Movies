@@ -4,11 +4,10 @@ import { Link } from "react-router-dom";
 
 import axios from "axios";
 
-const EditMovieForm = (props) => {
+const EditMovieForm = ({ setMovies }) => {
   const { id } = useParams();
   const { push } = useHistory();
 
-  const { setMovies } = props;
   const [movie, setMovie] = useState({
     title: "",
     director: "",
@@ -17,6 +16,7 @@ const EditMovieForm = (props) => {
     description: "",
   });
 
+  const { title, director, genre, metascore, description } = movie;
   const handleChange = (e) => {
     setMovie({
       ...movie,
@@ -37,7 +37,12 @@ const EditMovieForm = (props) => {
       });
   };
 
-  const { title, director, genre, metascore, description } = movie;
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9000/api/movies/${id}`)
+      .then((res) => setMovie(res.data))
+      .catch((error) => console.log(error));
+  }, [id]);
 
   return (
     <div className="bg-white rounded-md shadow flex-1">
