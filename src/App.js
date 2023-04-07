@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory, Link } from "react-router-dom";
 import MovieList from "./components/MovieList";
 import Movie from "./components/Movie";
 
@@ -64,10 +64,11 @@ const App = (props) => {
 
   return (
     <div>
-      <nav className="bg-zinc-800 px-6 py-3">
-        <h1 className="text-xl text-white">HTTP / CRUD Film Projesi</h1>
-      </nav>
-
+      <Link to="/movies">
+        <nav className="bg-zinc-800 px-6 py-3">
+          <h1 className="text-xl text-white">HTTP / CRUD Film Projesi</h1>
+        </nav>
+      </Link>
       <div className="max-w-4xl mx-auto px-3 pb-4">
         <MovieHeader />
         <div className="flex flex-col sm:flex-row gap-4">
