@@ -16,6 +16,8 @@ const App = (props) => {
   const [movies, setMovies] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
 
+  const [favButtonText, setFavButtonText] = useState(true);
+
   const { push } = useHistory();
 
   const deleteMovie = (id) => {
@@ -24,20 +26,29 @@ const App = (props) => {
       .then((res) => {
         console.log(res);
         setMovies(res.data);
+
+        const favMovie = favoriteMovies.filter((movie) => movie.id !== id);
+        setFavoriteMovies(favMovie);
       })
       .catch((err) => {
         console.log(err);
       });
-    const filteredMovies = movies.filter((movie) => movie.id !== id);
-    setMovies(filteredMovies);
+    // const filteredMovies = movies.filter((movie) => movie.id !== id);
+    // setMovies(filteredMovies);
     push(`/`);
   };
 
   const addToFavorites = (id) => {
     // const favMovie = movies.filter((movie) => movie.id === id)[0];
     const favMovie = movies.find((movie) => movie.id === id);
-    if (!favoriteMovies.find((movie) => movie.id === id))
+    if (!favoriteMovies.find((movie) => movie.id === id)) {
       setFavoriteMovies([...favoriteMovies, favMovie]);
+      setFavButtonText(false);
+    } else {
+      const favMovie = favoriteMovies.filter((movie) => movie.id !== id);
+      setFavoriteMovies(favMovie);
+      setFavButtonText(true);
+    }
   };
 
   useEffect(() => {
@@ -75,6 +86,9 @@ const App = (props) => {
               <Movie
                 deleteMovie={deleteMovie}
                 addToFavorites={addToFavorites}
+                favoriteMovies={favoriteMovies}
+                favButtonText={favButtonText}
+                setFavButtonText={setFavButtonText}
               />
             </Route>
 

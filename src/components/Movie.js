@@ -3,7 +3,13 @@ import { Link, useParams, useHistory } from "react-router-dom";
 
 import axios from "axios";
 
-const Movie = ({ addToFavorites, deleteMovie }) => {
+const Movie = ({
+  addToFavorites,
+  deleteMovie,
+  favoriteMovies,
+  favButtonText,
+  setFavButtonText,
+}) => {
   const [movie, setMovie] = useState("");
 
   const { id } = useParams();
@@ -14,6 +20,10 @@ const Movie = ({ addToFavorites, deleteMovie }) => {
       .get(`http://localhost:9000/api/movies/${id}`)
       .then((res) => {
         setMovie(res.data);
+
+        favoriteMovies.find((movie) => movie.id === id)
+          ? setFavButtonText(false)
+          : setFavButtonText(true);
       })
       .catch((err) => {
         console.log(err.response);
@@ -51,9 +61,14 @@ const Movie = ({ addToFavorites, deleteMovie }) => {
       <div className="px-5 py-3 border-t border-zinc-200 flex justify-end gap-2">
         <button
           onClick={() => addToFavorites(movie.id)}
-          className="myButton bg-blue-600 hover:bg-blue-500 "
+          // className="myButton bg-green-600 hover:bg-green-500 "
+          className={`myButton ${
+            favButtonText
+              ? "bg-green-600 hover:bg-green-500"
+              : "bg-gray-600 hover:bg-gray-500"
+          } `}
         >
-          Favorilere ekle
+          {favButtonText ? "Favorilere Ekle" : "Favorilerden Sil"}
         </button>
         <Link
           to={`/movies/edit/${movie.id}`}
