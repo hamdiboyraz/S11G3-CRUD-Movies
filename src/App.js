@@ -33,7 +33,12 @@ const App = (props) => {
     push(`/`);
   };
 
-  const addToFavorites = (movie) => {};
+  const addToFavorites = (id) => {
+    // const favMovie = movies.filter((movie) => movie.id === id)[0];
+    const favMovie = movies.find((movie) => movie.id === id);
+    if (!favoriteMovies.find((movie) => movie.id === id))
+      setFavoriteMovies([...favoriteMovies, favMovie]);
+  };
 
   useEffect(() => {
     axios
@@ -67,7 +72,10 @@ const App = (props) => {
             </Route>
 
             <Route path="/movies/:id">
-              <Movie deleteMovie={deleteMovie} />
+              <Movie
+                deleteMovie={deleteMovie}
+                addToFavorites={addToFavorites}
+              />
             </Route>
 
             <Route path="/movies">
